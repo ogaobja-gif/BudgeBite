@@ -113,11 +113,11 @@ DBMS-FINAL-2026-GroupName/
 
 | Group Member | Assigned Role |
 |---|---|
-| Member 1 | Group Leader / Project Coordinator |
-| Member 2 | System Analyst / Documentation |
-| Member 3 | Database Designer |
-| Member 4 | UI/UX Designer / Frontend Developer |
-| Member 5 | Backend Developer / GitHub Manager |
+| Miles malooy | Group Leader / Project Coordinator |
+| Jane Nicole Gomez| System Analyst / Documentation |
+| Netchelle Talledo | Database Designer |
+| Jeward Benlot | UI/UX Designer / Frontend Developer |
+| John Aaron ogaob | Backend Developer / GitHub Manager |
 
 *Replace the sample member labels and roles with your actual group members and assignments.*
 

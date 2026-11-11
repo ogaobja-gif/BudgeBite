@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8f6ef">
+  <meta name="description" content="Find affordable meals from local carinderias, then reserve ahead and pick up when it suits you.">
+  <title>BudgetBite — Good food, right on budget</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d3129;
+      --muted: #748078;
+      --green: #245c43;
+      --green-dark: #193f30;
+      --lime: #d7ed9f;
+      --orange: #e87846;
+      --cream: #f8f6ef;
+      --paper: #fffefa;
+      --line: #e8e7dd;
+      --shadow: 0 18px 50px rgba(34, 55, 42, .11);
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      min-width: 320px;
+    }
+
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
+    button { color: inherit; }
+
+    .container {
+      width: min(1160px, calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .announcement {
+      padding: 9px 16px;
+      background: var(--green-dark);
+      color: #f4f4e9;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: .025em;
+    }
+
+    .announcement strong { color: var(--lime); font-weight: 650; }
+
+    .site-header {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 1px solid rgba(29, 49, 41, .07);
+      background: rgba(248, 246, 239, .93);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      font-size: 20px;
+      font-weight: 780;
+      letter-spacing: -.055em;
+    }
+
+    .brand-mark {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--green);
+      color: var(--lime);
+    }
+
+    .brand-mark svg { width: 21px; height: 21px; }
+    .brand span span { color: var(--orange); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      color: #536158;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover { color: var(--orange); }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+    .button {
+      min-height: 43px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--green);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); background: var(--green-dark); }
+    .button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 3px solid #efa17e;
+      outline-offset: 3px;
+    }
+
+    .button-light {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+    }
+    .button-light:hover { background: white; }
+
+    .bag-count {
+      min-width: 19px;
+      height: 19px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0 5px;
+      border-radius: 50px;
+      background: var(--lime);
+      color: var(--green-dark);
+      font-size: 11px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 73px 0 78px;
+      background:
+        radial-gradient(ellipse at 82% 55%, rgba(216, 229, 174, .52), transparent 34%),
+        var(--cream);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.02fr;
+      align-items: center;
+      gap: 64px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 21px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 23px;
+      height: 1px;
+      background: var(--orange);
+      content: "";
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 560px;
+      margin-bottom: 19px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(47px, 5.3vw, 68px);
+      font-weight: 500;
+      letter-spacing: -.055em;
+      line-height: .99;
+    }
+
+    h1 em { color: var(--orange); font-weight: 500; }
+
+    .hero-copy {
+      max-width: 445px;
+      margin-bottom: 28px;
+      color: #68756c;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .budget-box {
+      max-width: 465px;
+      padding: 17px 18px 15px;
+      border: 1px solid #e8e6dc;
+      border-radius: 16px;
+      background: rgba(255, 254, 250, .85);
+      box-shadow: 0 10px 28px rgba(34, 55, 42, .045);
+    }
+
+    .budget-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 11px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .budget-head span:last-child {
+      color: var(--green);
+      font-size: 18px;
+      letter-spacing: -.03em;
+    }
+
+    .budget-range {
+      width: 100%;
+      height: 5px;
+      margin: 6px 0 9px;
+      border-radius: 99px;
+      appearance: none;
+      background: linear-gradient(90deg, var(--green) 0%, var(--green) 34%, #e8e8dc 34%, #e8e8dc 100%);
+      cursor: pointer;
+    }
+
+    .budget-range::-webkit-slider-thumb {
+      width: 17px;
+      height: 17px;
+      border: 3px solid white;
+      border-radius: 50%;
+      appearance: none;
+      background: var(--green);
+      box-shadow: 0 0 0 1px var(--green);
+    }
+
+    .budget-range::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border: 3px solid white;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 1px var(--green);
+    }
+
+    .budget-foot {
+      display: flex;
+      justify-content: space-between;
+      color: #929b93;
+      font-size: 10px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 17px;
+      margin-top: 22px;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .text-link:hover { color: var(--orange); }
+
+    .hero-art {
+      position: relative;
+      min-height: 438px;
+      display: grid;
+      place-items: center;
+    }
+
+    .hero-image-wrap {
+      position: relative;
+      width: min(100%, 470px);
+      height: 415px;
+      overflow: hidden;
+      border-radius: 46% 46% 22px 22px;
+      background: #d7dfc7;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-image-wrap::after {
+      position: absolute;
+      inset: 45% 0 0;
+      background: linear-gradient(transparent, rgba(20, 33, 25, .48));
+      content: "";
+    }
+
+    .hero-image-wrap img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .hero-image-label {
+      position: absolute;
+      z-index: 1;
+      right: 27px;
+      bottom: 26px;
+      left: 27px;
+      color: white;
+    }
+
+    .hero-image-label span { display: block; opacity: .8; font-size: 11px; }
+    .hero-image-label strong {
+      display: block;
+      margin-top: 3px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .floating-card {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
+      border: 1px solid rgba(29, 49, 41, .06);
+      border-radius: 13px;
+      background: var(--paper);
+      box-shadow: 0 12px 32px rgba(34, 55, 42, .12);
+    }
+
+    .floating-card.top { top: 51px; left: -12px; }
+    .floating-card.bottom { right: -14px; bottom: 63px; }
+
+    .float-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      border-radius: 10px;
+      background: #f4e9dc;
+      font-size: 16px;
+    }
+    .float-icon.green { background: #e8f0d7; }
+    .floating-card strong { display: block; font-size: 12px; }
+    .floating-card small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+
+    .proof {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #fbfaf5;
+    }
+
+    .proof-inner {
+      min-height: 81px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .proof-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: #59665d;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .proof-item b { color: var(--ink); font-size: 12px; }
+    .proof-icon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: #eef0df;
+      color: var(--green);
+      font-size: 15px;
+    }
+
+    .section { padding: 82px 0; }
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 29px;
+    }
+
+    .section-heading .eyebrow { margin-bottom: 11px; }
+
+    h2 {
+      margin-bottom: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(33px, 4vw, 43px);
+      font-weight: 500;
+      letter-spacing: -.045em;
+      line-height: 1.1;
+    }
+
+    .section-subtitle {
+      max-width: 370px;
+      margin: 11px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .meal-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .filter-chip {
+      min-height: 35px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      background: transparent;
+      color: #67736a;
+      font-size: 11px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+    .filter-chip:hover, .filter-chip.active {
+      border-color: var(--green);
+      background: var(--green);
+      color: white;
+    }
+
+    .budget-note {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .budget-note strong { color: var(--green); }
+
+    .meal-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .meal-card {
+      overflow: hidden;
+      border: 1px solid #eceae1;
+      border-radius: 15px;
+      background: var(--paper);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .meal-card:hover { transform: translateY(-4px); box-shadow: 0 15px 34px rgba(34, 55, 42, .09); }
+    .meal-card[hidden] { display: none; }
+
+    .meal-photo {
+      position: relative;
+      height: 172px;
+      overflow: hidden;
+      background: #e4e6d9;
+    }
+
+    .meal-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .35s ease;
+    }
+    .meal-card:hover .meal-photo img { transform: scale(1.045); }
+
+    .meal-tag {
+      position: absolute;
+      top: 11px;
+      left: 11px;
+      padding: 6px 9px;
+      border-radius: 50px;
+      background: rgba(255, 254, 250, .93);
+      color: var(--green);
+      font-size: 9px;
+      font-weight: 750;
+    }
+
+    .meal-info { padding: 14px 14px 13px; }
+    .meal-title-row { display: flex; align-items: start; justify-content: space-between; gap: 8px; }
+
+    .meal-title-row h3 {
+      margin-bottom: 4px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -.025em;
+    }
+    .rating { flex-shrink: 0; color: #ad7b35; font-size: 10px; font-weight: 700; }
+    .meal-shop { margin: 0; color: var(--muted); font-size: 10px; }
+    .meal-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 15px;
+      padding-top: 11px;
+      border-top: 1px solid #f0eee7;
+    }
+
+    .price { color: var(--green); font-size: 17px; font-weight: 750; letter-spacing: -.04em; }
+    .price small { color: #879188; font-size: 9px; font-weight: 500; letter-spacing: 0; }
+
+    .add-button {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #dfe6d6;
+      border-radius: 50%;
+      background: #f4f7ed;
+      color: var(--green);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+    .add-button:hover, .add-button.added { border-color: var(--green); background: var(--green); color: white; }
+
+    .empty-state {
+      display: none;
+      padding: 24px;
+      border: 1px dashed #d9dece;
+      border-radius: 14px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+    .empty-state.visible { display: block; }
+
+    .how-section {
+      padding: 76px 0 81px;
+      background: #edf0e3;
+    }
+
+    .how-top { text-align: center; }
+    .how-top .eyebrow { justify-content: center; }
+    .how-top .section-subtitle { margin: 13px auto 0; }
+
+    .steps {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 45px;
+    }
+
+    .step {
+      position: relative;
+      padding: 23px 23px 22px;
+      border: 1px solid rgba(36, 92, 67, .1);
+      border-radius: 15px;
+      background: rgba(255, 254, 250, .69);
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      background: var(--green);
+      color: var(--lime);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+    }
+    .step h3 { margin-bottom: 8px; font-size: 14px; }
+    .step p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+
+    .seller-banner {
+      padding: 71px 0;
+      background: var(--green-dark);
+      color: white;
+    }
+
+    .seller-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 35px;
+    }
+    .seller-banner .eyebrow { color: var(--lime); }
+    .seller-banner h2 { max-width: 550px; }
+    .seller-banner p {
+      max-width: 490px;
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, .7);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .seller-banner .button { flex-shrink: 0; background: var(--lime); color: var(--green-dark); }
+    .seller-banner .button:hover { background: white; }
+
+    footer { padding: 30px 0; background: #143427; color: rgba(255, 255, 255, .7); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    footer .brand { color: white; font-size: 17px; }
+    footer .brand-mark { width: 30px; height: 30px; background: rgba(255, 255, 255, .1); }
+    footer .brand-mark svg { width: 18px; height: 18px; }
+    .copyright { margin: 0; font-size: 10px; }
+    .footer-links { display: flex; gap: 20px; font-size: 10px; }
+    .footer-links a:hover { color: var(--lime); }
+
+    @media (max-width: 900px) {
+      .hero-grid { gap: 30px; }
+      .hero-art { min-height: 380px; }
+      .hero-image-wrap { height: 370px; }
+      .floating-card.top { left: -7px; }
+      .floating-card.bottom { right: -8px; }
+      .meal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .meal-photo { height: 205px; }
+      .nav-links { gap: 19px; }
+    }
+
+    @media (max-width: 680px) {
+      .container { width: min(100% - 34px, 520px); }
+      .announcement { font-size: 10px; }
+      .nav { min-height: 64px; gap: 12px; }
+      .brand { font-size: 18px; }
+      .brand-mark { width: 32px; height: 32px; }
+      .nav-links { display: none; }
+      .nav-actions { gap: 8px; }
+      .nav-actions .button { min-height: 38px; padding: 0 13px; font-size: 11px; }
+      .nav-actions .button-light { display: none; }
+      .hero { padding: 48px 0 43px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 25px; }
+      h1 { max-width: 470px; font-size: clamp(46px, 12vw, 62px); }
+      .hero-copy { max-width: 460px; font-size: 14px; }
+      .budget-box { max-width: none; }
+      .hero-art { min-height: 340px; margin: 2px 6px 0; }
+      .hero-image-wrap { width: min(100%, 410px); height: 330px; border-radius: 45% 45% 18px 18px; }
+      .floating-card.top { top: 22px; left: -7px; }
+      .floating-card.bottom { right: -5px; bottom: 38px; }
+      .floating-card { padding: 10px 12px; }
+      .proof-inner { min-height: unset; justify-content: center; flex-wrap: wrap; gap: 16px 22px; padding: 20px 0; }
+      .proof-item { min-width: calc(50% - 12px); font-size: 10px; }
+      .section { padding: 60px 0; }
+      .section-heading { align-items: start; flex-direction: column; gap: 16px; }
+      .section-heading > .text-link { margin-top: 0; }
+      .meal-tools { gap: 7px; overflow-x: auto; padding-bottom: 4px; }
+      .filter-chip { flex-shrink: 0; padding: 0 12px; }
+      .budget-note { display: none; }
+      .meal-grid { gap: 12px; }
+      .meal-photo { height: clamp(125px, 37vw, 190px); }
+      .meal-info { padding: 12px 11px; }
+      .meal-title-row h3 { font-size: 15px; }
+      .meal-shop { font-size: 9px; }
+      .meal-bottom { margin-top: 12px; }
+      .steps { grid-template-columns: 1fr; gap: 12px; margin-top: 31px; }
+      .step { display: grid; grid-template-columns: 42px 1fr; column-gap: 13px; padding: 17px; }
+      .step-number { grid-row: span 2; margin-bottom: 0; }
+      .step h3 { align-self: end; margin-bottom: 5px; }
+      .how-section { padding: 60px 0; }
+      .seller-banner { padding: 54px 0; }
+      .seller-inner { align-items: start; flex-direction: column; }
+      .footer-inner { flex-wrap: wrap; }
+      .footer-links { order: 1; width: 100%; }
+      .copyright { margin-left: auto; }
+    }
+
+    @media (max-width: 380px) {
+      .container { width: calc(100% - 28px); }
+      .meal-grid { gap: 9px; }
+      .meal-title-row { flex-direction: column; gap: 3px; }
+      .meal-title-row h3 { margin-bottom: 0; }
+      .meal-photo { height: 123px; }
+      .hero-actions { gap: 13px; }
+      .hero-actions .button { padding-inline: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="announcement">A little easier on your wallet. <strong>Made with love by local kitchens.</strong></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#" aria-label="BudgetBite home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 10.2c0-3.8 3.1-6.7 7-6.7s7 2.9 7 6.7H5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M4.6 12.2h14.8M6.2 14.2c.7 2.3 2.7 3.8 5.8 3.8s5.1-1.5 5.8-3.8M8 20h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            <path d="M10 6.4c.5-.7 1.2-1 2-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>budget<span>bite</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#meals">Find a meal</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#for-sellers">For carinderias</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="button button-light" href="#meals" aria-label="Your selected meals">Your picks <span class="bag-count" id="bag-count">0</span></a>
+        <a class="button" href="#meals">Find your meal <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Good food, closer to home</p>
+          <h1>Good food.<br>Right on <em>budget.</em></h1>
+          <p class="hero-copy">Your next favorite meal is waiting at a neighborhood carinderia. Tell us what you can spend, find something delicious, and reserve it before you head out.</p>
+
+          <div class="budget-box">
+            <div class="budget-head">
+              <label for="budget-range">What’s your meal budget?</label>
+              <span id="budget-value" aria-live="polite">₱150</span>
+            </div>
+            <input class="budget-range" id="budget-range" type="range" min="50" max="500" step="10" value="150" aria-label="Meal budget in pesos">
+            <div class="budget-foot"><span>₱50</span><span>₱500</span></div>
+          </div>
+
+          <div class="hero-actions">
+            <a class="button" href="#meals">Show me meals <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="#how-it-works">How BudgetBite works <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-label="A freshly prepared Filipino meal">
+          <div class="hero-image-wrap">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&amp;fit=crop&amp;w=1100&amp;q=85" alt="Colorful fresh meal served in a bowl">
+            <div class="hero-image-label"><span>Made fresh, right around the corner</span><strong>Everyday favorites, made yours.</strong></div>
+          </div>
+          <div class="floating-card top">
+            <span class="float-icon" aria-hidden="true">₱</span>
+            <span><strong>Meals that make sense</strong><small>Delicious, without overspending</small></span>
+          </div>
+          <div class="floating-card bottom">
+            <span class="float-icon green" aria-hidden="true">✓</span>
+            <span><strong>Reserve ahead</strong><small>Skip the wait. Pick up with ease.</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof" aria-label="BudgetBite benefits">
+      <div class="container proof-inner">
+        <div class="proof-item"><span class="proof-icon" aria-hidden="true">⌕</span><span><b>Find your fit</b><br>Meals for your budget</span></div>
+        <div class="proof-item"><span class="proof-icon" aria-hidden="true">◷</span><span><b>Pick your time</b><br>Reserve before you go</span></div>
+        <div class="proof-item"><span class="proof-icon" aria-hidden="true">♡</span><span><b>Shop local</b><br>Support neighborhood cooks</span></div>
+        <div class="proof-item"><span class="proof-icon" aria-hidden="true">₱</span><span><b>Pay your way</b><br>Online or cash at pickup</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="meals">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">A good place to start</p>
+            <h2>Little budget.<br>Big comfort.</h2>
+            <p class="section-subtitle">A few local favorites to get you going. Every meal is made by a neighborhood kitchen and ready to reserve.</p>
+          </div>
+          <a class="text-link" href="#meals">Explore all meals <span aria-hidden="true">→</span></a>
+        </div>
+
+        <div class="meal-tools" role="group" aria-label="Filter meals by category">
+          <button class="filter-chip active" type="button" data-filter="all" aria-pressed="true">All favorites</button>
+          <button class="filter-chip" type="button" data-filter="ulam" aria-pressed="false">Ulam</button>
+          <button class="filter-chip" type="button" data-filter="silog" aria-pressed="false">Silog meals</button>
+          <button class="filter-chip" type="button" data-filter="snack" aria-pressed="false">Merienda</button>
+          <span class="budget-note">Showing meals up to <strong id="budget-note-value">₱150</strong></span>
+        </div>
+
+        <div class="meal-grid" id="meal-grid">
+          <article class="meal-card" data-category="silog" data-price="89">
+            <div class="meal-photo">
+              <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Garlic rice and egg breakfast plate" loading="lazy">
+              <span class="meal-tag">Local favorite</span>
+            </div>
+            <div class="meal-info">
+              <div class="meal-title-row"><h3>Tapsilog</h3><span class="rating">★ 4.9</span></div>
+              <p class="meal-shop">Aling Nena’s Kitchen · 0.4 km</p>
+              <div class="meal-bottom"><span class="price">₱89 <small>/ serving</small></span><button class="add-button" type="button" aria-label="Add Tapsilog to your picks" aria-pressed="false">+</button></div>
+            </div>
+          </article>
+
+          <article class="meal-card" data-category="ulam" data-price="110">
+            <div class="meal-photo">
+              <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Freshly cooked savory chicken meal" loading="lazy">
+              <span class="meal-tag">Comfort food</span>
+            </div>
+            <div class="meal-info">
+              <div class="meal-title-row"><h3>Chicken Adobo</h3><span class="rating">★ 4.8</span></div>
+              <p class="meal-shop">Nanay Cora’s Carinderia · 0.7 km</p>
+              <div class="meal-bottom"><span class="price">₱110 <small>/ with rice</small></span><button class="add-button" type="button" aria-label="Add Chicken Adobo to your picks" aria-pressed="false">+</button></div>
+            </div>
+          </article>
+
+          <article class="meal-card" data-category="snack" data-price="65">
+            <div class="meal-photo">
+              <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Golden crispy local snack served warm" loading="lazy">
+              <span class="meal-tag">Afternoon pick</span>
+            </div>
+            <div class="meal-info">
+              <div class="meal-title-row"><h3>Lumpiang Shanghai</h3><span class="rating">★ 4.9</span></div>
+              <p class="meal-shop">Kusina ni Ate · 1.1 km</p>
+              <div class="meal-bottom"><span class="price">₱65 <small>/ 5 pieces</small></span><button class="add-button" type="button" aria-label="Add Lumpiang Shanghai to your picks" aria-pressed="false">+</button></div>
+            </div>
+          </article>
+
+          <article class="meal-card" data-category="silog" data-price="95">
+            <div class="meal-photo">
+              <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Rice bowl with a generous serving of meat and vegetables" loading="lazy">
+              <span class="meal-tag">Worth waking up for</span>
+            </div>
+            <div class="meal-info">
+              <div class="meal-title-row"><h3>Longsilog</h3><span class="rating">★ 4.7</span></div>
+              <p class="meal-shop">Mang Tony’s Eatery · 0.9 km</p>
+              <div class="meal-bottom"><span class="price">₱95 <small>/ serving</small></span><button class="add-button" type="button" aria-label="Add Longsilog to your picks" aria-pressed="false">+</button></div>
+            </div>
+          </article>
+        </div>
+        <p class="empty-state" id="empty-state" role="status">No meals match that budget and category just yet. Try raising your budget or choosing another filter.</p>
+      </div>
+    </section>
+
+    <section class="how-section" id="how-it-works">
+      <div class="container">
+        <div class="how-top">
+          <p class="eyebrow">Good food, no guesswork</p>
+          <h2>Three little steps.<br>One happy meal.</h2>
+          <p class="section-subtitle">From “what can I afford?” to “that was delicious.” We make the in-between easy.</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <span class="step-number">01</span>
+            <h3>Set your budget</h3>
+            <p>Pick what you’d like to spend, then browse meals that fit. No surprises at checkout.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">02</span>
+            <h3>Choose &amp; reserve</h3>
+            <p>Find your favorite, choose how many, and set a pickup time that works for you.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">03</span>
+            <h3>Pick up &amp; dig in</h3>
+            <p>Your local kitchen gets a head start. Swing by when it’s ready and enjoy every bite.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="seller-banner" id="for-sellers">
+      <div class="container seller-inner">
+        <div>
+          <p class="eyebrow">For neighborhood kitchens</p>
+          <h2>Your cooking brings people together.</h2>
+          <p>Bring your menu online, organize reservations, and spend less time sorting orders. Let’s help more neighbors find your kitchen.</p>
+        </div>
+        <a class="button" href="mailto:hello@budgetbite.local?subject=Join%20BudgetBite">Join BudgetBite <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <a class="brand" href="#" aria-label="BudgetBite home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 10.2c0-3.8 3.1-6.7 7-6.7s7 2.9 7 6.7H5ZM4.6 12.2h14.8M6.2 14.2c.7 2.3 2.7 3.8 5.8 3.8s5.1-1.5 5.8-3.8M8 20h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span>budget<span>bite</span></span>
+      </a>
+      <p class="copyright">© 2026 BudgetBite · Good food should feel good.</p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="#meals">Find a meal</a><a href="#for-sellers">For sellers</a><a href="mailto:hello@budgetbite.local">Get in touch</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const budgetRange = document.querySelector("#budget-range");
+    const budgetValue = document.querySelector("#budget-value");
+    const budgetNoteValue = document.querySelector("#budget-note-value");
+    const mealCards = [...document.querySelectorAll(".meal-card")];
+    const filterButtons = [...document.querySelectorAll(".filter-chip")];
+    const emptyState = document.querySelector("#empty-state");
+    const bagCount = document.querySelector("#bag-count");
+    let activeCategory = "all";
+    let selectedCount = 0;
+
+    function updateMeals() {
+      const maxBudget = Number(budgetRange.value);
+      let visibleCount = 0;
+      budgetValue.textContent = `₱${maxBudget}`;
+      budgetNoteValue.textContent = `₱${maxBudget}`;
+      budgetRange.style.background = `linear-gradient(90deg, var(--green) 0%, var(--green) ${(maxBudget - 50) / 4.5}%, #e8e8dc ${(maxBudget - 50) / 4.5}%, #e8e8dc 100%)`;
+
+      mealCards.forEach((card) => {
+        const withinBudget = Number(card.dataset.price) <= maxBudget;
+        const matchesCategory = activeCategory === "all" || card.dataset.category === activeCategory;
+        const isVisible = withinBudget && matchesCategory;
+        card.hidden = !isVisible;
+        if (isVisible) visibleCount += 1;
+      });
+
+      emptyState.classList.toggle("visible", visibleCount === 0);
+    }
+
+    budgetRange.addEventListener("input", updateMeals);
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeCategory = button.dataset.filter;
+        filterButtons.forEach((item) => {
+          const isActive = item === button;
+          item.classList.toggle("active", isActive);
+          item.setAttribute("aria-pressed", String(isActive));
+        });
+        updateMeals();
+      });
+    });
+
+    document.querySelectorAll(".add-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const isAdded = button.classList.toggle("added");
+        button.textContent = isAdded ? "✓" : "+";
+        button.setAttribute("aria-pressed", String(isAdded));
+        button.setAttribute("aria-label", `${isAdded ? "Remove" : "Add"} ${button.closest(".meal-card").querySelector("h3").textContent} ${isAdded ? "from" : "to"} your picks`);
+        selectedCount += isAdded ? 1 : -1;
+        bagCount.textContent = String(selectedCount);
+      });
+    });
+
+    updateMeals();
+  </script>
+</body>
+</html>

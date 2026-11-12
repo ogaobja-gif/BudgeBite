@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign Up · BudgetBite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body>
+<main class="shell">
+  <aside class="hero">
+    <a class="brand" href="login.html"><span class="logo">🍲</span>Budget<b>Bite</b></a>
+    <div class="hero-copy">
+      <h2>Eat well.<br>Spend less.</h2>
+      <p>Discover affordable, home-cooked meals from local carinderias near you.</p>
+      <ul><li>🍛 Budget-friendly meals</li><li>🥗 Fresh daily menus</li><li>🏪 Support local sellers</li></ul>
+    </div>
+    <div class="blobs" aria-hidden="true"></div>
+  </aside>
+  <section class="panel"><div class="card">
+    <h1>Create your account</h1>
+    <p class="sub">Join BudgetBite and start eating smart.</p>
+    <div id="alert" class="alert" role="alert" hidden></div>
+    <form id="signupForm" novalidate>
+      <div class="field"><label for="full_name">Full name</label><input type="text" id="full_name" name="full_name" autocomplete="name" ><small class="error"></small></div>
+      <div class="grid2"><div class="field"><label for="email">Email address</label><input type="email" id="email" name="email" autocomplete="email" ><small class="error"></small></div><div class="field"><label for="phone">Phone number</label><input type="tel" id="phone" name="phone" autocomplete="tel" ><small class="error"></small></div></div>
+      <div class="field"><label for="username">Username</label><input type="text" id="username" name="username" autocomplete="username" ><small class="error"></small></div>
+      <div class="grid2"><div class="field"><label for="password">Password</label><div class="pw"><input type="password" id="password" name="password" autocomplete="new-password"><button type="button" class="toggle" data-toggle="password" aria-label="Show password">Show</button></div><div class="meter" id="meter"><i></i></div><p class="hint">At least 8 characters with uppercase, lowercase and a number.</p><small class="error"></small></div><div class="field"><label for="confirm_password">Confirm password</label><div class="pw"><input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password"><button type="button" class="toggle" data-toggle="confirm_password" aria-label="Show password">Show</button></div><small class="error"></small></div></div>
+      <div class="field"><label>Account type</label>
+        <div class="roles">
+          <label class="role"><input type="radio" name="role" value="customer" checked><span>🍽️ Customer</span></label>
+          <label class="role"><input type="radio" name="role" value="seller"><span>🏪 Carinderia Seller</span></label>
+        </div>
+        <div class="note" id="sellerNote" hidden>Seller accounts must be approved by an administrator before you can log in.</div>
+        <small class="error"></small></div>
+      <button class="btn" type="submit"><span>Register</span></button>
+    </form>
+    <p class="switch">Already have an account? <a href="login.html">Log in</a></p>
+  </div></section>
+</main>
+<script src="assets/js/auth.js" defer></script>
+</body>
+</html>
